@@ -1,0 +1,18 @@
+{
+    "name": "nkovacs/yii2-jquery-fileupload",
+    "description": "jQuery File Upload Yii2 extension",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","jquery","fileupload"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nikola Kovacs",
+            "email": "n.kovacs@mito.hu"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "nkovacs\\jqueryupload\\": ""
+        }
+    }
+}
