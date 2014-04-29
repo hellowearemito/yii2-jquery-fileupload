@@ -9,6 +9,6 @@ class AudioPreviewAsset extends \yii\web\AssetBundle
         'js/jquery.fileupload-audio.js',
     ];
     public $depends = [
-        'nkovacs\jqueryupload\FileuploadAsset',
+        'nkovacs\jqueryupload\PreviewAsset',
     ];
 }

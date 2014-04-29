@@ -9,6 +9,6 @@ class VideoPreviewAsset extends \yii\web\AssetBundle
         'js/jquery.fileupload-video.js',
     ];
     public $depends = [
-        'nkovacs\jqueryupload\FileuploadAsset',
+        'nkovacs\jqueryupload\PreviewAsset',
     ];
 }

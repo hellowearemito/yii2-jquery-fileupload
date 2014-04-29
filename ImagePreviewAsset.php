@@ -9,6 +9,6 @@ class ImagePreviewAsset extends \yii\web\AssetBundle
         'js/jquery.fileupload-image.js',
     ];
     public $depends = [
-        'nkovacs\jqueryupload\FileuploadAsset',
+        'nkovacs\jqueryupload\PreviewAsset',
     ];
 }
