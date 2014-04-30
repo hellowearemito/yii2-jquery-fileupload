@@ -230,37 +230,12 @@ class UploadWidget extends \yii\widgets\InputWidget
             self::registerAssets($options);
         }
 
-        if ($this->fileTemplate === false) {
-            $this->fileTemplate = <<<EOT
-<div>
-    <span class="filename"></span>
-    <span class="preview"></span>
-    <span class="progress"></span>
-    <span class="error"></span>
-    <button class="retryButton">{$this->strings['retry-label']}</button>
-    <button class="cancelButton">{$this->strings['cancel-label']}</button>
-    <button class="deleteButton">{$this->strings['delete-label']}</button>
-</div>
-EOT
-            ;
-
-            $this->templateSelectors = [
-                'filename' => '.filename',
-                'preview' => '.preview',
-                'progress' => '.progress',
-                'progressbar' => false,
-                'retry' => '.retryButton',
-                'cancel' => '.cancelButton',
-                'delete' => '.deleteButton',
-                'error' => '.error',
-            ];
-
-        }
-
         $id = $this->options['id'];
 
         if ($this->multiple) {
             $this->options['multiple'] = true;
+        } else {
+            $this->maximum = 1;
         }
 
         if ($this->hasModel()) {
@@ -290,6 +265,35 @@ EOT
         } else {
             $divId = $this->uploadsContainer;
             echo $input;
+        }
+
+        if ($this->fileTemplate === false) {
+            $this->fileTemplate = <<<EOT
+<div class="thumbnail">
+    <span class="filename"></span>
+    <span class="preview img-thumbnail"></span>
+    <span class="progress"></span>
+    <span class="error"></span>
+    <button class="retryButton">{$this->strings['retry-label']}</button>
+    <button class="cancelButton">{$this->strings['cancel-label']}</button>
+    <button class="deleteButton">{$this->strings['delete-label']}</button>
+</div>
+EOT
+            ;
+
+            $this->uploadedSelector = "#$divId .thumbnail";
+
+            $this->templateSelectors = [
+                'filename' => '.filename',
+                'preview' => '.preview',
+                'progress' => '.progress',
+                'progressbar' => false,
+                'retry' => '.retryButton',
+                'cancel' => '.cancelButton',
+                'delete' => '.deleteButton',
+                'error' => '.error',
+            ];
+
         }
 
         $options = $this->getClientOptions();

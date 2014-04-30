@@ -68,6 +68,11 @@
                     errorContainer.empty();
                 }
 
+                if (options.uploadedSelector !== false
+                    && (options.maximum !== false && $(options.uploadedSelector).length >= options.maximum)
+                ) {
+                    return false
+                }
                 if (options.maximum !== false && options.uploadedSelector !== false && $(options.uploadedSelector).length >= options.maximum ) {
                     return false;
                 }
