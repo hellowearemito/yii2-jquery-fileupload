@@ -35,6 +35,7 @@ class UploadWidget extends \yii\widgets\InputWidget
      * @var array ui messages
      */
     public $strings = [
+        'upload-label' => 'Upload',
         'delete-label' => "Delete",
         'cancel-label' => "Cancel",
         'retry-label' => "Retry",
@@ -247,6 +248,8 @@ class UploadWidget extends \yii\widgets\InputWidget
             $input = Html::fileInput($inputName, $this->value, $this->options);
         }
 
+        $view = $this->getView();
+
         if ($this->uploadsContainer === false) {
 
             $divOptions = $this->containerOptions;
@@ -255,13 +258,37 @@ class UploadWidget extends \yii\widgets\InputWidget
                 $divOptions['id'] = 'au_' . $id;
             }
 
+            if (!isset($divOptions['class'])) {
+                $divOptions['class'] = 'row';
+            }
+
             $divId = $divOptions['id'];
+
+            echo Html::beginTag('button',['class' => 'btn btn-primary au-upload-button']);
+            echo Html::tag('span',$this->strings['upload-label'],[]);
+            echo $input;
+            echo Html::endTag('button');
 
             echo Html::beginTag('div',$divOptions);
 
-            echo $input;
-
             echo Html::endTag('div');
+
+            $view->registerCss("
+            .au-upload-button {
+                position: relative;
+                overflow: hidden;
+            }
+            .au-upload-button input {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                opacity: 0;
+                -ms-filter: 'alpha(opacity=0)';
+                font-size: 200px;
+                direction: ltr;
+                cursor: pointer;
+            }", [], 'au-bootstrap-file-input');
         } else {
             $divId = $this->uploadsContainer;
             echo $input;
@@ -269,25 +296,32 @@ class UploadWidget extends \yii\widgets\InputWidget
 
         if ($this->fileTemplate === false) {
             $this->fileTemplate = <<<EOT
-<div class="thumbnail">
-    <span class="filename"></span>
-    <span class="preview img-thumbnail"></span>
-    <span class="progress"></span>
+<div class="img-thumbnail au-thumbnail">
+    <figure class="preview">
+        <div class="progress">
+            <div class="progress-bar">
+                <span class="progress-text">60%</span>
+            </div>
+        </div>
+        <figcaption class="filename"></figcaption>
+    </figure>
     <span class="error"></span>
-    <button class="retryButton">{$this->strings['retry-label']}</button>
-    <button class="cancelButton">{$this->strings['cancel-label']}</button>
-    <button class="deleteButton">{$this->strings['delete-label']}</button>
+    <button class="retryButton btn btn-default">{$this->strings['retry-label']}</button>
+    <button class="cancelButton btn btn-danger">{$this->strings['cancel-label']}</button>
+    <button class="deleteButton btn btn-danger">{$this->strings['delete-label']}</button>
 </div>
 EOT
             ;
 
-            $this->uploadedSelector = "#$divId .thumbnail";
+            $view->registerCss('.au-thumbnail img { vertical-align: baseline; }', [], 'au-bootstrap-fix');
+
+            $this->uploadedSelector = "#$divId .au-thumbnail";
 
             $this->templateSelectors = [
                 'filename' => '.filename',
                 'preview' => '.preview',
-                'progress' => '.progress',
-                'progressbar' => false,
+                'progress' => '.progress-text',
+                'progressbar' => '.progress-bar',
                 'retry' => '.retryButton',
                 'cancel' => '.cancelButton',
                 'delete' => '.deleteButton',
@@ -300,7 +334,7 @@ EOT
         $options['inputName'] = $inputName;
         $options['divId'] = $divId;
         $options = Json::encode($options);
-        $view = $this->getView();
+
         $view->registerJs("jQuery('#$id').ajaxupload($options);");
     }
 }
