@@ -1,13 +1,13 @@
 {
     "name": "nkovacs/yii2-jquery-fileupload",
-    "description": "jQuery File Upload Yii2 extension",
+    "description": "jQuery File Upload Yii2 wrapper extension",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","jquery","fileupload"],
     "license": "MIT",
     "authors": [
         {
             "name": "Nikola Kovacs",
-            "email": "n.kovacs@mito.hu"
+            "email": "nikola.kovacs@gmail.com"
         }
     ],
     "require": {
