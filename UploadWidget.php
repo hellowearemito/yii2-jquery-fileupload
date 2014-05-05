@@ -69,6 +69,7 @@ class UploadWidget extends \yii\widgets\InputWidget
 
     /**
      * @var string|false id of the uploaded file container, false to create one
+     * Note: this widget should precede the container
      */
     public $uploadsContainer = false;
 
@@ -206,6 +207,19 @@ class UploadWidget extends \yii\widgets\InputWidget
     }
 
     /**
+     * remove [] from $name
+     * @param string $name
+     * @return string
+     */
+    protected function singleName($name)
+    {
+        if (substr($name,-2) === '[]') {
+            return substr($name,0,-2);
+        }
+        return $name;
+    }
+
+    /**
      * Initializes the widget.
      */
     public function init()
@@ -241,7 +255,12 @@ class UploadWidget extends \yii\widgets\InputWidget
 
         if ($this->hasModel()) {
             $attributeName = $this->multipleName($this->attribute);
-            $input = Html::activeFileInput($this->model, $attributeName, $this->options);
+            if ($this->multiple) {
+                $input = Html::activeHiddenInput($this->model, $this->singleName($this->attribute), ['id' => null, 'value' => ''])
+                         . Html::activeInput('file',$this->model, $attributeName, $this->options);
+            } else {
+                $input = Html::activeFileInput($this->model, $attributeName, $this->options);
+            }
             $inputName = Html::getInputName($this->model, $attributeName);
         } else {
             $inputName = Html::getInputName($this->model, $attributeName);
