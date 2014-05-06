@@ -12,6 +12,7 @@
                 maximum: false,
                 uploadedSelector: false,
                 removeFailed: false,
+                clearOnUpload: false,
                 imageResize: false,
                 imageMaxWidth: 1920,
                 imageMaxHeight: 1080,
@@ -66,6 +67,17 @@
             add: function (e, data) {
                 if (errorContainer) {
                     errorContainer.empty();
+                }
+
+                if (options.clearOnUpload && options.uploadedSelector !== false) {
+                    var $uploaded = $(options.uploadedSelector);
+                    if (options.templateSelectors['cancel']) {
+                        $uploaded.find(options.templateSelectors['cancel']).click();
+                    }
+                    if (options.templateSelectors['delete']) {
+                        $uploaded.find(options.templateSelectors['delete']).click();
+                    }
+                    $uploaded.remove();
                 }
 
                 if (options.uploadedSelector !== false
@@ -143,7 +155,6 @@
                         });
                     }
                 }
-                // TODO: real error message instead of aborted
                 if (data.result[options.inputName][0].error) {
                     var errorMsg = data.result[options.inputName][0].error;
                     if (errorContainer) {

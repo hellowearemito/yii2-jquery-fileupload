@@ -68,6 +68,11 @@ class UploadWidget extends \yii\widgets\InputWidget
     public $removeFailed = false;
 
     /**
+     * @var boolean whether to clear existing uploads on selecting a file
+     */
+    public $clearOnUpload = false;
+
+    /**
      * @var string|false id of the uploaded file container, false to create one
      * Note: this widget should precede the container
      */
@@ -170,6 +175,7 @@ class UploadWidget extends \yii\widgets\InputWidget
             'maximum' => $this->maximum,
             'uploadedSelector' => $this->uploadedSelector,
             'removeFailed' => $this->removeFailed,
+            'clearOnUpload' => $this->clearOnUpload,
         ];
 
         $clientSideResize = '/Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent)';
@@ -251,6 +257,7 @@ class UploadWidget extends \yii\widgets\InputWidget
             $this->options['multiple'] = true;
         } else {
             $this->maximum = 1;
+            $this->clearOnUpload = true;
         }
 
         if ($this->hasModel()) {
