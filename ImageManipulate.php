@@ -4,7 +4,8 @@ namespace nkovacs\jqueryupload;
 
 class ImageManipulate
 {
-    protected static function imageCreateFromAny($filepath) {
+    protected static function imageCreateFromAny($filepath)
+    {
         $type = @exif_imagetype($filepath);
         $allowedTypes = [
             1,  // [] gif
@@ -29,13 +30,13 @@ class ImageManipulate
                     if ($exif!== false && isset($exif['Orientation'])) {
                         switch ($exif['Orientation']) {
                             case 8:
-                                $im = imagerotate($im,90,0);
+                                $im = imagerotate($im, 90, 0);
                                 break;
                             case 3:
-                                $im = imagerotate($im,180,0);
+                                $im = imagerotate($im, 180, 0);
                                 break;
                             case 6:
-                                $im = imagerotate($im,-90,0);
+                                $im = imagerotate($im, -90, 0);
                                 break;
                         }
                     }
@@ -78,7 +79,7 @@ class ImageManipulate
         }
 
         if ($mem_limit < 512*1024*1024) {
-            ini_set('memory_limit','512M');
+            ini_set('memory_limit', '512M');
         }
 
         return $orig_limit;
@@ -88,7 +89,7 @@ class ImageManipulate
     {
         $orig_limit = self::raiseMemoryLimit();
         $image_arr = self::imageCreateFromAny($filename);
-        ini_set('memory_limit',$orig_limit);
+        ini_set('memory_limit', $orig_limit);
         if ($image_arr === false) {
             return false;
         }
@@ -145,27 +146,29 @@ class ImageManipulate
                 $new_height = $max_height;
                 $new_width = $width * $height_diff;
             }
-        }
-        elseif ($max_width < $width) {
+        } elseif ($max_width < $width) {
             $new_width = $max_width;
             $new_height = $height * $width_diff;
-        }
-        elseif ($max_height < $height) {
+        } elseif ($max_height < $height) {
             $new_height = $max_height;
             $new_width = $width * $height_diff;
         }
 
         $new_image = imagecreatetruecolor($new_width, $new_height);
-        imagealphablending($new_image,false);
-        imagesavealpha($new_image,true);
+        imagealphablending($new_image, false);
+        imagesavealpha($new_image, true);
 
         $ret = imagecopyresampled(
             $new_image,
             $image,
-            0, 0,
-            0, 0,
-            $new_width, $new_height,
-            $width, $height
+            0,
+            0,
+            0,
+            0,
+            $new_width,
+            $new_height,
+            $width,
+            $height
         );
 
         if (!$ret) {
@@ -193,22 +196,19 @@ class ImageManipulate
         $original_aspect = $width / $height;
         $thumb_aspect = $thumb_width / $thumb_height;
 
-        if ( $original_aspect >= $thumb_aspect )
-        {
+        if ($original_aspect >= $thumb_aspect) {
             // If image is wider than thumbnail (in aspect ratio sense)
             $new_height = $thumb_height;
             $new_width = $width / ($height / $thumb_height);
-        }
-        else
-        {
+        } else {
             // If the thumbnail is wider than the image
             $new_width = $thumb_width;
             $new_height = $height / ($width / $thumb_width);
         }
 
-        $thumb = imagecreatetruecolor( $thumb_width, $thumb_height );
-        imagealphablending($thumb,false);
-        imagesavealpha($thumb,true);
+        $thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+        imagealphablending($thumb, false);
+        imagesavealpha($thumb, true);
 
         // Resize and crop
         $ret = imagecopyresampled(
@@ -216,10 +216,12 @@ class ImageManipulate
             $image,
             0 - ($new_width - $thumb_width) / 2, // Center the image horizontally
             0 - ($new_height - $thumb_height) / 2, // Center the image vertically
-            //0,
-            0, 0,
-            $new_width, $new_height,
-            $width, $height
+            0,
+            0,
+            $new_width,
+            $new_height,
+            $width,
+            $height
         );
         if (!$ret) {
             return false;

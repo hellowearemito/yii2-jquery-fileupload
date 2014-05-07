@@ -140,7 +140,7 @@ class UploadWidget extends \yii\widgets\InputWidget
             'imagePreview' => false,
             'videoPreview' => false,
             'audioPreview' => false,
-        ],$options);
+        ], $options);
 
         FileuploadAsset::register($this->getView());
         if ($options['audioPreview']) {
@@ -206,7 +206,7 @@ class UploadWidget extends \yii\widgets\InputWidget
         if (!$this->multiple) {
             return $name;
         }
-        if (substr($name,-2) === '[]') {
+        if (substr($name, -2) === '[]') {
             return $name;
         }
         return $name . '[]';
@@ -219,8 +219,8 @@ class UploadWidget extends \yii\widgets\InputWidget
      */
     protected function singleName($name)
     {
-        if (substr($name,-2) === '[]') {
-            return substr($name,0,-2);
+        if (substr($name, -2) === '[]') {
+            return substr($name, 0, -2);
         }
         return $name;
     }
@@ -264,7 +264,7 @@ class UploadWidget extends \yii\widgets\InputWidget
             $attributeName = $this->multipleName($this->attribute);
             if ($this->multiple) {
                 $input = Html::activeHiddenInput($this->model, $this->singleName($this->attribute), ['id' => null, 'value' => ''])
-                         . Html::activeInput('file',$this->model, $attributeName, $this->options);
+                         . Html::activeInput('file', $this->model, $attributeName, $this->options);
             } else {
                 $input = Html::activeFileInput($this->model, $attributeName, $this->options);
             }
@@ -290,31 +290,34 @@ class UploadWidget extends \yii\widgets\InputWidget
 
             $divId = $divOptions['id'];
 
-            echo Html::beginTag('button',['class' => 'btn btn-primary au-upload-button']);
-            echo Html::tag('span',$this->strings['upload-label'],[]);
+            echo Html::beginTag('button', ['class' => 'btn btn-primary au-upload-button']);
+            echo Html::tag('span', $this->strings['upload-label'], []);
             echo $input;
             echo Html::endTag('button');
 
-            echo Html::beginTag('div',$divOptions);
+            echo Html::beginTag('div', $divOptions);
 
             echo Html::endTag('div');
 
-            $view->registerCss("
-            .au-upload-button {
-                position: relative;
-                overflow: hidden;
-            }
-            .au-upload-button input {
-                position: absolute;
-                top: 0;
-                right: 0;
-                margin: 0;
-                opacity: 0;
-                -ms-filter: 'alpha(opacity=0)';
-                font-size: 200px;
-                direction: ltr;
-                cursor: pointer;
-            }", [], 'au-bootstrap-file-input');
+            $view->registerCss(
+                ".au-upload-button {
+                    position: relative;
+                    overflow: hidden;
+                }
+                .au-upload-button input {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    margin: 0;
+                    opacity: 0;
+                    -ms-filter: 'alpha(opacity=0)';
+                    font-size: 200px;
+                    direction: ltr;
+                    cursor: pointer;
+                }",
+                [],
+                'au-bootstrap-file-input'
+            );
         } else {
             $divId = $this->uploadsContainer;
             echo $input;

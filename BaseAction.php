@@ -33,10 +33,10 @@ class BaseAction extends \yii\base\Action
 
     public function beforeRun()
     {
-        if (($pos=strpos($this->id,'.'))===false) {
+        if (($pos=strpos($this->id, '.'))===false) {
             $this->actionPrefix = '';
         } else {
-            $this->actionPrefix = substr($this->id,0,$pos+1);
+            $this->actionPrefix = substr($this->id, 0, $pos+1);
         }
         return parent::beforeRun();
     }

@@ -110,21 +110,21 @@ class UploadAction extends BaseAction
         }
 
         if ($this->createDirs && !is_dir($this->uploadDest)) {
-            mkdir($this->uploadDest,0777,true);
+            mkdir($this->uploadDest, 0777, true);
         }
         if ($this->createDirs && !is_dir($this->thumbDest)) {
-            mkdir($this->thumbDest,0777,true);
+            mkdir($this->thumbDest, 0777, true);
         }
 
         if ($this->thumbnailCallback === null) {
-            $this->thumbnailCallback = function($input, $output) {
-                return ImageManipulate::crop($input, $output, 300,200);
+            $this->thumbnailCallback = function ($input, $output) {
+                return ImageManipulate::crop($input, $output, 300, 200);
             };
         }
 
         if ($this->saveCallback === null) {
-            $this->saveCallback = function($input, $output) {
-                return ImageManipulate::resize($input, $output, 1920,1080);
+            $this->saveCallback = function ($input, $output) {
+                return ImageManipulate::resize($input, $output, 1920, 1080);
             };
         }
 
@@ -241,7 +241,7 @@ class UploadAction extends BaseAction
             }
 
             if ($this->saveCallback !== false) {
-                if (call_user_func($this->saveCallback, $path, $path )) {
+                if (call_user_func($this->saveCallback, $path, $path)) {
                 }
             }
 
@@ -258,7 +258,7 @@ class UploadAction extends BaseAction
 
             if ($this->thumbnailCallback !== false) {
                 $thumbPath = $this->thumbDest . DIRECTORY_SEPARATOR . $file->name;
-                if (call_user_func($this->thumbnailCallback, $path, $thumbPath )) {
+                if (call_user_func($this->thumbnailCallback, $path, $thumbPath)) {
                     $file->thumbnailUrl = Url::toRoute($thumbRoute);
                 }
             } else {
@@ -301,13 +301,13 @@ class UploadAction extends BaseAction
     protected function getUniqueName($name, $content_range)
     {
         // rename file if directory with the same name exists
-        while(is_dir($this->uploadDest . DIRECTORY_SEPARATOR . $name)) {
+        while (is_dir($this->uploadDest . DIRECTORY_SEPARATOR . $name)) {
             $name = $this->upcountName($name);
         }
         // Keep an existing filename if this is part of a chunked upload:
         $uploaded_bytes = $this->fixIntegerOverflow(intval($content_range[1]));
 
-        while(is_file($this->uploadDest . DIRECTORY_SEPARATOR . $name)) {
+        while (is_file($this->uploadDest . DIRECTORY_SEPARATOR . $name)) {
             if ($uploaded_bytes === $this->getFileSize($this->uploadDest . DIRECTORY_SEPARATOR . $name)) {
                 return $name;
             }
@@ -350,7 +350,7 @@ class UploadAction extends BaseAction
             if (($pos = strrpos($name, '.')) === false) {
                 return 'invalid_file_ext';
             }
-            $ext = substr($name,$pos+1);
+            $ext = substr($name, $pos+1);
             if (!$ext) {
                 return 'invalid_file_ext';
             }
