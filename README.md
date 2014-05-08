@@ -25,7 +25,9 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
+TODO
+
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \nkovacs\jqueryupload\AutoloadExample::widget(); ?>```
+<?= \nkovacs\jqueryupload\UploadWidget::widget(); ?>```
