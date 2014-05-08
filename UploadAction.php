@@ -48,12 +48,12 @@ class UploadAction extends BaseAction
     public $maxSize = false;
 
     /**
-     * @var thumbnailer function, false to disable thumbnail generation
+     * @var callable thumbnailer function, false to disable thumbnail generation
      */
     public $thumbnailCallback;
 
     /**
-     * @var savecallBack function, false to disable
+     * @var callable savecallBack function, false to disable
      */
     public $saveCallback;
 
