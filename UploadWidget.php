@@ -276,6 +276,8 @@ class UploadWidget extends \yii\widgets\InputWidget
 
         $view = $this->getView();
 
+        $output = '';
+
         if ($this->uploadsContainer === false) {
 
             $divOptions = $this->containerOptions;
@@ -290,14 +292,14 @@ class UploadWidget extends \yii\widgets\InputWidget
 
             $divId = $divOptions['id'];
 
-            echo Html::beginTag('button', ['class' => 'btn btn-primary au-upload-button']);
-            echo Html::tag('span', $this->strings['upload-label'], []);
-            echo $input;
-            echo Html::endTag('button');
+            $output .= Html::beginTag('button', ['class' => 'btn btn-primary au-upload-button']);
+            $output .= Html::tag('span', $this->strings['upload-label'], []);
+            $output .= $input;
+            $output .= Html::endTag('button');
 
-            echo Html::beginTag('div', $divOptions);
+            $output .= Html::beginTag('div', $divOptions);
 
-            echo Html::endTag('div');
+            $output .= Html::endTag('div');
 
             $view->registerCss(
                 ".au-upload-button {
@@ -320,7 +322,7 @@ class UploadWidget extends \yii\widgets\InputWidget
             );
         } else {
             $divId = $this->uploadsContainer;
-            echo $input;
+            $output .= $input;
         }
 
         if ($this->fileTemplate === false) {
@@ -365,5 +367,6 @@ EOT
         $options = Json::encode($options);
 
         $view->registerJs("jQuery('#$id').ajaxupload($options);");
+        return $output;
     }
 }
