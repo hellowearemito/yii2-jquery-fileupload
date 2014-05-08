@@ -270,7 +270,7 @@ class UploadWidget extends \yii\widgets\InputWidget
             }
             $inputName = Html::getInputName($this->model, $attributeName);
         } else {
-            $inputName = Html::getInputName($this->model, $attributeName);
+            $inputName = $this->name;
             $input = Html::fileInput($inputName, $this->value, $this->options);
         }
 
