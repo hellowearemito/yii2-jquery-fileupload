@@ -17,7 +17,8 @@
                 imageMaxWidth: 1920,
                 imageMaxHeight: 1080,
                 imageCrop: false,
-                previewCrop: true
+                previewCrop: true,
+                formData: {}
             },
             progressContainer,
             errorContainer,
@@ -42,7 +43,7 @@
         self.fileupload({
             url: options.uploadUrl,
             dataType: 'json',
-            formData: {},
+            formData: options.formData,
             maxChunkSize: options.chunkSize,
             forceIframeTransport: options.debugIframe,
             previewMaxWidth: options.previewWidth,

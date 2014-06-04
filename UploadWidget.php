@@ -364,6 +364,10 @@ EOT
         $options = $this->getClientOptions();
         $options['inputName'] = $inputName;
         $options['divId'] = $divId;
+        $request = Yii::$app->getRequest();
+        if ($request instanceof \yii\web\Request && $request->enableCsrfValidation) {
+            $options['formData'] = [$request->csrfParam => $request->getCsrfToken()];
+        }
         $options = Json::encode($options);
 
         $view->registerJs("jQuery('#$id').ajaxupload($options);");
