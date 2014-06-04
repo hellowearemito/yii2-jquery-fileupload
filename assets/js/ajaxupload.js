@@ -111,7 +111,7 @@
                             data.abort();
 
                             if (cleanupUrl = $(this).data('cleanupUrl')) {
-                                $.ajax(cleanupUrl);
+                                $.post(cleanupUrl, options.formData);
                             }
 
                             data.context.remove();
@@ -246,7 +246,7 @@
                             .on('click.ajaxupload',function(e) {
                                 e.preventDefault();
                                 if (file.deleteUrl) {
-                                    $.ajax(file.deleteUrl).done(function() {
+                                    $.post(file.deleteUrl, options.formData).done(function() {
                                         $this.remove();
                                     }).fail(function() {
                                         console.log("Delete failed!");
