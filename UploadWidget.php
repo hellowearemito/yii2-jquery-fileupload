@@ -84,6 +84,11 @@ class UploadWidget extends \yii\widgets\InputWidget
     public $containerOptions = [];
 
     /**
+     * @var array button options
+     */
+    public $buttonOptions = [];
+
+    /**
      * @var string|false selector for progress percentage
      */
     public $progress = false;
@@ -281,6 +286,7 @@ class UploadWidget extends \yii\widgets\InputWidget
         if ($this->uploadsContainer === false) {
 
             $divOptions = $this->containerOptions;
+            $buttonOptions = $this->buttonOptions;
 
             if (!isset($divOptions['id'])) {
                 $divOptions['id'] = 'au_' . $id;
@@ -292,10 +298,16 @@ class UploadWidget extends \yii\widgets\InputWidget
 
             $divId = $divOptions['id'];
 
-            $output .= Html::beginTag('button', ['class' => 'btn btn-primary au-upload-button']);
+            if (!isset($buttonOptions['class'])) {
+                $buttonOptions['class'] = 'au-upload-button btn btn-primary';
+            } else {
+                $buttonOptions['class'] .= ' au-upload-button';
+            }
+
+            $output .= Html::beginTag('span', $buttonOptions);
             $output .= Html::tag('span', $this->strings['upload-label'], []);
             $output .= $input;
-            $output .= Html::endTag('button');
+            $output .= Html::endTag('span');
 
             $output .= Html::beginTag('div', $divOptions);
 
