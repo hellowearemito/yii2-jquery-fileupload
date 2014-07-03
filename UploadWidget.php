@@ -1,6 +1,6 @@
 <?php
 
-namespace nkovacs\jqueryupload;
+namespace mito\jqueryupload;
 
 use Yii;
 use yii\base\Model;

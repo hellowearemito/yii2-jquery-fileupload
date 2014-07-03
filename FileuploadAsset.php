@@ -1,10 +1,10 @@
 <?php
 
-namespace nkovacs\jqueryupload;
+namespace mito\jqueryupload;
 
 class FileuploadAsset extends \yii\web\AssetBundle
 {
-    public $sourcePath = '@nkovacs/jqueryupload/assets';
+    public $sourcePath = '@mito/jqueryupload/assets';
     public $js = [
         'js/jquery.iframe-transport.js',
         'js/jquery.fileupload.js',

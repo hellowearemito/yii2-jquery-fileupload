@@ -1,6 +1,6 @@
 {
-    "name": "nkovacs/yii2-jquery-fileupload",
-    "description": "jQuery File Upload Yii2 wrapper extension",
+    "name": "mito/yii2-jquery-fileupload",
+    "description": "jQuery File Upload Yii 2 wrapper extension",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","jquery","fileupload"],
     "license": "MIT",
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "nkovacs\\jqueryupload\\": ""
+            "mito\\jqueryupload\\": ""
         }
     }
 }

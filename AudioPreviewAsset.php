@@ -1,14 +1,14 @@
 <?php
 
-namespace nkovacs\jqueryupload;
+namespace mito\jqueryupload;
 
 class AudioPreviewAsset extends \yii\web\AssetBundle
 {
-    public $sourcePath = '@nkovacs/jqueryupload/assets';
+    public $sourcePath = '@mito/jqueryupload/assets';
     public $js = [
         'js/jquery.fileupload-audio.js',
     ];
     public $depends = [
-        'nkovacs\jqueryupload\PreviewAsset',
+        'mito\jqueryupload\PreviewAsset',
     ];
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace nkovacs\jqueryupload;
+namespace mito\jqueryupload;
 
 use yii\base\InvalidConfigException;
 use yii\web\UploadedFile;
