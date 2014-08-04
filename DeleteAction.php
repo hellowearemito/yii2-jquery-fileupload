@@ -29,7 +29,7 @@ class DeleteAction extends BaseAction
         $files = [];
         if (!is_array($filenames)) {
             if ($filenames !== null && $filenames !== "") {
-                $filenames = array($filenames);
+                $filenames = [$filenames];
             }
         }
 
