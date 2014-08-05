@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\base\InvalidConfigException;
 
 class UploadWidget extends \yii\widgets\InputWidget
@@ -85,6 +86,8 @@ class UploadWidget extends \yii\widgets\InputWidget
 
     /**
      * @var array button options
+     * The following special options are supported:
+     * - tag: string, the tag name of the button. Defaults to 'span'.
      */
     public $buttonOptions = [];
 
@@ -304,10 +307,11 @@ class UploadWidget extends \yii\widgets\InputWidget
                 $buttonOptions['class'] .= ' au-upload-button';
             }
 
-            $output .= Html::beginTag('span', $buttonOptions);
+            $buttonTag = ArrayHelper::remove($buttonOptions, 'tag', 'span');
+            $output .= Html::beginTag($buttonTag, $buttonOptions);
             $output .= Html::tag('span', $this->strings['upload-label'], []);
             $output .= $input;
-            $output .= Html::endTag('span');
+            $output .= Html::endTag($buttonTag);
 
             $output .= Html::beginTag('div', $divOptions);
 
