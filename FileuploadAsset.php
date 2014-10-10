@@ -12,6 +12,6 @@ class FileuploadAsset extends \yii\web\AssetBundle
     ];
     public $depends = [
         'yii\web\JqueryAsset',
-        'yii\jui\CoreAsset',
+        'yii\jui\JuiAsset',
     ];
 }
