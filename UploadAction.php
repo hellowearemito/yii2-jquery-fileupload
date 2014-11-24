@@ -53,12 +53,13 @@ class UploadAction extends BaseAction
     public $thumbnailCallback;
 
     /**
-     * @var callable savecallBack function, false to disable
+     * @var callable|boolean savecallBack function, false to disable
      */
     public $saveCallback;
 
     /**
-     * @var string|array thumbnail action route
+     * @var string|array|boolean|null thumbnail action route, defaults to actionPrefix.thumb
+     * set to false to disable server side preview
      */
     public $thumbRoute;
 
@@ -246,23 +247,25 @@ class UploadAction extends BaseAction
             }
 
             $thumbRoute = $this->thumbRoute;
-            if ($thumbRoute === null) {
-                $thumbRoute = [$this->actionPrefix . 'thumb'];
-            }
-            if (is_string($thumbRoute)) {
-                $thumbRoute = [
-                    $thumbRoute,
-                ];
-            }
-            $thumbRoute['filename'] = $file->name;
+            if ($thumbRoute !== false) {
+                if ($thumbRoute === null) {
+                    $thumbRoute = [$this->actionPrefix . 'thumb'];
+                }
+                if (is_string($thumbRoute)) {
+                    $thumbRoute = [
+                        $thumbRoute,
+                    ];
+                }
+                $thumbRoute['filename'] = $file->name;
 
-            if ($this->thumbnailCallback !== false) {
-                $thumbPath = $this->thumbDest . DIRECTORY_SEPARATOR . $file->name;
-                if (call_user_func($this->thumbnailCallback, $path, $thumbPath)) {
+                if ($this->thumbnailCallback !== false) {
+                    $thumbPath = $this->thumbDest . DIRECTORY_SEPARATOR . $file->name;
+                    if (call_user_func($this->thumbnailCallback, $path, $thumbPath)) {
+                        $file->thumbnailUrl = Url::toRoute($thumbRoute);
+                    }
+                } else {
                     $file->thumbnailUrl = Url::toRoute($thumbRoute);
                 }
-            } else {
-                $file->thumbnailUrl = Url::toRoute($thumbRoute);
             }
         }
 

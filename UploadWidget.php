@@ -59,7 +59,7 @@ class UploadWidget extends \yii\widgets\InputWidget
      */
     public $imageResize = false;
     /**
-     * @var array|boolean size (width,height) of the preview, false to disable
+     * @var array|boolean size (width,height) of the preview, false to disable client side preview
      */
     public $preview = false;
 
