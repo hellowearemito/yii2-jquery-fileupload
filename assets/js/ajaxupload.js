@@ -257,7 +257,7 @@
                             });
                     }
                     if (options.templateSelectors['cancel']) {
-                        $this.find(options.templateSelectors['cancel']).hide();
+                        $this.find(options.templateSelectors['cancel']).remove();
                     }
 
                     if (file.error) {
