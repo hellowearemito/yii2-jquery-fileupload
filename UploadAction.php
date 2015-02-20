@@ -48,12 +48,27 @@ class UploadAction extends BaseAction
     public $maxSize = false;
 
     /**
+     * @var array (width,height) of the preview thumbnail, defaults to 300x200
+     * This is ignored if the default thumbnailCallback is replaced.
+     */
+    public $preview = [300, 200];
+
+    /**
      * @var callable thumbnailer function, false to disable thumbnail generation
+     * The default will resize and crop the image to the size specified by preview
      */
     public $thumbnailCallback;
 
     /**
+     * @var array (width,height) maximum size of the image
+     * The default saveCallback will resize the image so that it fits inside this rectangle.
+     * This is ignored if the default saveCallback is replaced.
+     */
+    public $imageResize = [1920, 1080];
+
+    /**
      * @var callable|boolean savecallBack function, false to disable
+     * The default will resize the image so that it fits inside a rectange specified by imageResize
      */
     public $saveCallback;
 
@@ -119,13 +134,13 @@ class UploadAction extends BaseAction
 
         if ($this->thumbnailCallback === null) {
             $this->thumbnailCallback = function ($input, $output) {
-                return ImageManipulate::crop($input, $output, 300, 200);
+                return ImageManipulate::crop($input, $output, $this->preview[0], $this->preview[1]);
             };
         }
 
         if ($this->saveCallback === null) {
             $this->saveCallback = function ($input, $output) {
-                return ImageManipulate::resize($input, $output, 1920, 1080);
+                return ImageManipulate::resize($input, $output, $this->imageResize[0], $this->imageResize[1]);
             };
         }
 

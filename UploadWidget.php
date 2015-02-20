@@ -56,6 +56,7 @@ class UploadWidget extends \yii\widgets\InputWidget
 
     /**
      * @var array|boolean size (width,height,crop) of the image, false to disable
+     * This will resize the image client-side in supported browsers, to reduce the amount of data transferred.
      */
     public $imageResize = false;
     /**
