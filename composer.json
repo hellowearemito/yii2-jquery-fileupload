@@ -12,7 +12,8 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "yiisoft/yii2-jui": "*"
+        "yiisoft/yii2-jui": "*",
+        "bower-asset/blueimp-file-upload": "*"
     },
     "autoload": {
         "psr-4": {
