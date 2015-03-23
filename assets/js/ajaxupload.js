@@ -169,6 +169,12 @@
                     return false;
                 }
             },
+            chunksend: function(e, data) {
+                if (data.context.data('error-set')) {
+                    return false;
+                }
+                return true;
+            },
             fail: function(e, data) {
                 data.context.each(function(index) {
                     var $this = $(this),
