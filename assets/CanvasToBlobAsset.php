@@ -1,6 +1,6 @@
 <?php
 
-namespace mito\jqueryupload;
+namespace mito\jqueryupload\assets;
 
 class CanvasToBlobAsset extends \yii\web\AssetBundle
 {

@@ -161,15 +161,15 @@ class UploadWidget extends \yii\widgets\InputWidget
             'audioPreview' => false,
         ], $options);
 
-        FileuploadAsset::register($this->getView());
+        assets\FileuploadAsset::register($this->getView());
         if ($options['audioPreview']) {
-            AudioPreviewAsset::register($this->getView());
+            assets\AudioPreviewAsset::register($this->getView());
         }
         if ($options['imagePreview']) {
-            ImagePreviewAsset::register($this->getView());
+            assets\ImagePreviewAsset::register($this->getView());
         }
         if ($options['videoPreview']) {
-            VideoPreviewAsset::register($this->getView());
+            assets\VideoPreviewAsset::register($this->getView());
         }
     }
 

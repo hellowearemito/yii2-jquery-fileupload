@@ -1,6 +1,6 @@
 <?php
 
-namespace mito\jqueryupload;
+namespace mito\jqueryupload\assets;
 
 class PreviewAsset extends \yii\web\AssetBundle
 {
@@ -9,8 +9,8 @@ class PreviewAsset extends \yii\web\AssetBundle
         'js/jquery.fileupload-process.js',
     ];
     public $depends = [
-        'mito\jqueryupload\LoadImageAsset',
-        'mito\jqueryupload\CanvasToBlobAsset',
-        'mito\jqueryupload\FileuploadAsset',
+        'mito\jqueryupload\assets\LoadImageAsset',
+        'mito\jqueryupload\assets\CanvasToBlobAsset',
+        'mito\jqueryupload\assets\FileuploadAsset',
     ];
 }

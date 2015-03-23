@@ -1,6 +1,6 @@
 <?php
 
-namespace mito\jqueryupload;
+namespace mito\jqueryupload\assets;
 
 class AudioPreviewAsset extends \yii\web\AssetBundle
 {
@@ -9,6 +9,6 @@ class AudioPreviewAsset extends \yii\web\AssetBundle
         'js/jquery.fileupload-audio.js',
     ];
     public $depends = [
-        'mito\jqueryupload\PreviewAsset',
+        'mito\jqueryupload\assets\PreviewAsset',
     ];
 }
