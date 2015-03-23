@@ -4,7 +4,7 @@ namespace mito\jqueryupload;
 
 class VideoPreviewAsset extends \yii\web\AssetBundle
 {
-    public $sourcePath = '@mito/jqueryupload/assets';
+    public $sourcePath = '@bower/blueimp-file-upload';
     public $js = [
         'js/jquery.fileupload-video.js',
     ];

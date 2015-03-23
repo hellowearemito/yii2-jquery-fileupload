@@ -65,6 +65,16 @@ class UploadWidget extends \yii\widgets\InputWidget
     public $preview = false;
 
     /**
+     * @var boolean whether to enable client-side preview for audio files.
+     */
+    public $audioPreview = false;
+
+    /**
+     * @var boolean whether to enable client-side preview for video files.
+     */
+    public $videoPreview = false;
+
+    /**
      * @var boolean whether to immediately remove failed uploads
      */
     public $removeFailed = false;
@@ -250,7 +260,10 @@ class UploadWidget extends \yii\widgets\InputWidget
     public function run()
     {
         if ($this->registerAssets) {
-            $options = [];
+            $options = [
+                'videoPreview' => $this->videoPreview,
+                'audioPreview' => $this->audioPreview,
+            ];
             if ($this->preview !== false) {
                 $options['imagePreview'] = true;
             }
