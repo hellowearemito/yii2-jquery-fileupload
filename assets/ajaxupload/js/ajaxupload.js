@@ -53,17 +53,19 @@
             imageMaxWidth: options.imageMaxWidth,
             imageMaxHeight: options.imageMaxHeight,
             imageCrop: options.imageCrop,
-            start: function() {
+            start: function(e) {
                 if (progressContainer) {
                     progressContainer.stop().fadeIn(400);
                 }
+                $(e.target).trigger('ajaxuploadstart');
             },
-            stop: function() {
+            stop: function(e) {
                 if (progressContainer) {
-                    progressContainer.stop().fadeOut(400,function() {
+                    progressContainer.stop().fadeOut(400, function() {
                         progressbar && progressbar.css(options.progressbarAllProperty ? options.progressbarAllProperty : 'width',0);
                     });
                 }
+                $(e.target).trigger('ajaxuploadstop');
             },
             add: function (e, data) {
                 if (errorContainer) {
@@ -90,7 +92,7 @@
                     return false;
                 }
                 data.context = $();
-                $.each(data.files,function(index, file) {
+                $.each(data.files, function(index, file) {
 
                     var picture = $($.parseHTML($.trim(options.fileTemplate))).appendTo('#'+options.divId);
                     if (options.templateSelectors['filename']) {
@@ -106,9 +108,11 @@
                         picture.find(options.templateSelectors['delete']).hide();
                     }
                     if (options.templateSelectors['cancel']) {
-                        picture.find(options.templateSelectors['cancel']).show().on('click.ajaxupload',function(e) {
-                            e.preventDefault();
+                        picture.find(options.templateSelectors['cancel']).show().on('click.ajaxupload', function(e2) {
+                            e2.preventDefault();
                             data.abort();
+
+                            $(e.target).trigger('ajaxuploadcancel', [data.files[index]]);
 
                             if (cleanupUrl = $(this).data('cleanupUrl')) {
                                 $.post(cleanupUrl, options.formData);
@@ -152,7 +156,7 @@
                     var cancelButtons = data.context.find(options.templateSelectors['cancel']);
                     if (data.result[options.inputName][0].deleteUrl) {
                         cancelButtons.each(function(index, elem) {
-                            $(elem).data('cleanupUrl',data.result[options.inputName][0].deleteUrl);
+                            $(elem).data('cleanupUrl', data.result[options.inputName][0].deleteUrl);
                         });
                     }
                 }
@@ -165,7 +169,8 @@
                     if (!options.removeFailed && options.templateSelectors['error']) {
                         data.context.find(options.templateSelectors['error']).text(errorMsg);
                     }
-                    data.context.data('error-set',true);
+                    data.context.data('error-set', true);
+                    $(e.target).trigger('ajaxuploadfailed', [data.files[0], errorMsg, data.result[options.inputName][0]]);
                     return false;
                 }
             },
@@ -181,7 +186,11 @@
                         errorMsg = options.strings['upload-failed'],
                         errorSet = data.context.data('error-set');
 
-                    data.context.data('error-set',null);
+                    if (!errorSet) {
+                        $(e.target).trigger('ajaxuploadfailed', [data.files[index], errorMsg]);
+                    }
+
+                    data.context.data('error-set', null);
 
                     if (errorContainer && !errorSet) {
                         errorContainer.append(document.createTextNode(errorMsg));
@@ -199,8 +208,10 @@
                         $(this).find(options.templateSelectors['retry'])
                             .show()
                             .off('click.ajaxupload')
-                            .on('click.ajaxupload',function(e) {
-                                e.preventDefault();
+                            .on('click.ajaxupload', function(e2) {
+                                e2.preventDefault();
+
+                                $(e.target).trigger('ajaxuploadretry', [data.files[index]]);
 
                                 if (options.templateSelectors['error']) {
                                     $this.find(options.templateSelectors['error']).text('');
@@ -238,19 +249,22 @@
                     var $this = $(this);
                     if (!data.result[options.inputName][index]) {
                         $this.remove();
+                        $(e.target).trigger('ajaxuploadfailed', [data.files[index], '', {}]);
                         return;
                     }
 
                     var file = data.result[options.inputName][index],
-                        //field = $($.parseHTML($.trim(options.fieldTemplate))).val(file.name);
                         field = $($.parseHTML('<input type="hidden"/>')).attr('name',options.inputName).val(file.name);
 
                     if (options.templateSelectors['delete']) {
                         $this.find(options.templateSelectors['delete'])
                             .show()
                             .off('click.ajaxupload')
-                            .on('click.ajaxupload',function(e) {
-                                e.preventDefault();
+                            .on('click.ajaxupload',function(e2) {
+                                e2.preventDefault();
+
+                                $(e.target).trigger('ajaxuploaddelete', [data.files[index]]);
+
                                 if (file.deleteUrl) {
                                     $.post(file.deleteUrl, options.formData).done(function() {
                                         $this.remove();
@@ -268,6 +282,8 @@
 
                     if (file.error) {
 
+                        $(e.target).trigger('ajaxuploadfailed', [data.files[index], file.error, file]);
+
                         if (errorContainer) {
                             errorContainer.append(document.createTextNode(file.error));
                             errorContainer.append('<br/>');
@@ -282,6 +298,7 @@
                         }
                     } else {
                         $this.append(field);
+                        $(e.target).trigger('ajaxuploadsucceeded', [data.files[index], file]);
                     }
                     if (file.thumbnailUrl) {
                         if (options.templateSelectors['preview']) {
