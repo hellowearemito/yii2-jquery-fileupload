@@ -395,7 +395,7 @@ EOT
         if ($request instanceof \yii\web\Request && $request->enableCsrfValidation) {
             $options['formData'] = [$request->csrfParam => $request->getCsrfToken()];
         }
-        $options = Json::encode($options);
+        $options = Json::htmlEncode($options);
 
         $view->registerJs("jQuery('#$id').ajaxupload($options);");
         return $output;
