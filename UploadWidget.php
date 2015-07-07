@@ -279,13 +279,21 @@ class UploadWidget extends \yii\widgets\InputWidget
             $this->clearOnUpload = true;
         }
 
+        $fileId = $id;
+        $hidden = '';
         if ($this->hasModel()) {
             $attributeName = $this->multipleName($this->attribute);
+            $fileId = 'au_file_' . $id;
             if ($this->multiple) {
-                $input = Html::activeHiddenInput($this->model, $this->singleName($this->attribute), ['id' => null, 'value' => ''])
-                         . Html::activeInput('file', $this->model, $attributeName, $this->options);
+                $hidden = Html::activeHiddenInput($this->model, $this->singleName($this->attribute), ['id' => false, 'value' => '']);
+                $input = Html::activeInput('file', $this->model, $attributeName, array_merge($this->options, ['id' => $fileId]));
+                /*$input = Html::activeHiddenInput($this->model, $this->singleName($this->attribute), ['value' => ''])
+                         . Html::activeInput('file', $this->model, $attributeName, array_merge($this->options, ['id' => $fileId]));*/
             } else {
-                $input = Html::activeFileInput($this->model, $attributeName, $this->options);
+                $hidden = Html::activeHiddenInput($this->model, $attributeName, ['id' => false, 'value' => '']);
+                $input = Html::activeInput('file', $this->model, $attributeName, array_merge($this->options, ['id' => $fileId]));
+                /*$input = Html::activeHiddenInput($this->model, $attributeName, ['value' => ''])
+                         . Html::activeInput('file', $this->model, $attributeName, array_merge($this->options, ['id' => $fileId]));*/
             }
             $inputName = Html::getInputName($this->model, $attributeName);
         } else {
@@ -303,7 +311,7 @@ class UploadWidget extends \yii\widgets\InputWidget
             $buttonOptions = $this->buttonOptions;
 
             if (!isset($divOptions['id'])) {
-                $divOptions['id'] = 'au_' . $id;
+                $divOptions['id'] = $id;
             }
 
             if (!isset($divOptions['class'])) {
@@ -325,6 +333,7 @@ class UploadWidget extends \yii\widgets\InputWidget
             $output .= Html::endTag($buttonTag);
 
             $output .= Html::beginTag('div', $divOptions);
+            $output .= $hidden;
 
             $output .= Html::endTag('div');
 
@@ -397,7 +406,7 @@ EOT
         }
         $options = Json::htmlEncode($options);
 
-        $view->registerJs("jQuery('#$id').ajaxupload($options);");
+        $view->registerJs("jQuery('#$fileId').ajaxupload($options);");
         return $output;
     }
 }
