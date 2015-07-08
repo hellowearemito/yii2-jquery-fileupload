@@ -1,4 +1,142 @@
 (function($){
+    'use strict';
+
+    // Detect file input support, based on
+    // http://viljamis.com/blog/2012/file-upload-support-on-mobile/
+    $.support.fileInput = !(new RegExp(
+        // Handle devices which give false positives for the feature detection:
+        '(Android (1\\.[0156]|2\\.[01]))' +
+            '|(Windows Phone (OS 7|8\\.0))|(XBLWP)|(ZuneWP)|(WPDesktop)' +
+            '|(w(eb)?OSBrowser)|(webOS)' +
+            '|(Kindle/(1\\.0|2\\.[05]|3\\.0))'
+    ).test(window.navigator.userAgent) ||
+        // Feature detection for all other devices:
+        $('<input type="file">').prop('disabled'));
+
+    // The FileReader API is not actually used, but works as feature detection,
+    // as some Safari versions (5?) support XHR file uploads via the FormData API,
+    // but not non-multipart XHR file uploads.
+    // window.XMLHttpRequestUpload is not available on IE10, so we check for
+    // window.ProgressEvent instead to detect XHR2 file upload capability:
+    $.support.xhrFileUpload = !!(window.ProgressEvent && window.FileReader);
+    $.support.xhrFormDataFileUpload = !!window.FormData;
+
+    // Detect support for Blob slicing (required for chunked uploads):
+    $.support.blobSlice = window.Blob && (Blob.prototype.slice ||
+        Blob.prototype.webkitSlice || Blob.prototype.mozSlice);
+
+    // Helper function to create drag handlers for dragover/dragenter/dragleave:
+    function getDragHandler(type) {
+        var isDragOver = type === 'dragover';
+        return function (e) {
+            e.dataTransfer = e.originalEvent && e.originalEvent.dataTransfer;
+            var dataTransfer = e.dataTransfer;
+            if (dataTransfer && $.inArray('Files', dataTransfer.types) !== -1/* &&
+                    this._trigger(
+                        type,
+                        $.Event(type, {delegatedEvent: e})
+                    ) !== false*/
+            ) {
+                e.preventDefault();
+                if (isDragOver) {
+                    dataTransfer.dropEffect = 'copy';
+                }
+            }
+        };
+    }
+
+    $.fn.simplefileupload = function(_options) {
+        var self = this;
+
+        /*self.fileupload({
+            dataType: 'json',
+            formData: {
+                'ajax-file-upload': true
+            }
+        });*/
+
+        var $label = self.find('.filename');
+        var $fakeInput = self.find(_options.input);
+        var $hiddenInput = self.find(_options.hiddenInput);
+        var $form = self.closest('form');
+
+        self.on('dragover', getDragHandler('dragover'));
+        self.on('dragenter', getDragHandler('dragenter'));
+        self.on('dragleave', getDragHandler('dragleave'));
+        self.on('drop', function(e) {
+            e.dataTransfer = e.originalEvent && e.originalEvent.dataTransfer;
+            var dataTransfer = e.dataTransfer;
+            if (dataTransfer && dataTransfer.files && dataTransfer.files.length) {
+                e.preventDefault();
+                var names = [];
+                for (var i = 0, l = dataTransfer.files.length; i<l; i++) {
+                    names.push(dataTransfer.files[i].name);
+                }
+                var val = names.join(',');
+                $fakeInput.val(val);
+                if ($fakeInput.length) {
+                    $fakeInput.get(0).files = dataTransfer.files;
+                }
+                $label.text(val);
+                $hiddenInput.val(val);
+                oldInput = resetInput();
+                $form.yiiActiveForm('validateAttribute', _options.attributeId);
+            }
+        });
+
+        // clone and reset the file input.
+        function resetInput() {
+            var $input = $(_options.fileInput);
+            var $inputClone = $input.clone();
+            $('<form></form>').append($inputClone)[0].reset();
+            return $input.after($inputClone).detach();
+        }
+
+        var oldInput;
+
+        self.on('change', _options.fileInput, function(e) {
+            var $input = $(e.target);
+            $label.text($input.val().replace(/^C:\\fakepath\\/, ""));
+            $fakeInput.val($input.val());
+            if ($fakeInput.length) {
+                $fakeInput.get(0).files = $input.get(0).files;
+            }
+            $hiddenInput.val($input.val());
+            oldInput = resetInput();
+            $form.yiiActiveForm('validateAttribute', _options.attributeId);
+        });
+
+        $form.on('beforeValidateAttribute', function(e, attribute) {
+            if (attribute.input !== _options.input) {
+                return;
+            }
+        });
+
+        $form.on('afterValidateAttribute', function(e, attribute, messages) {
+            if (attribute.input !== _options.input) {
+                return;
+            }
+            if (messages.length > 0) {
+                return;
+            }
+            // upload here
+            oldInput.fileupload();
+            oldInput.fileupload('add', {
+                fileInput: oldInput
+            });
+        });
+
+        /*self.find('input[type="file"]').fileupload({
+            dataType: 'json',
+            formData: {
+                'ajax-file-upload': true
+            },
+            replaceFileInput: false,
+            forceIframeTransport: true
+        });*/
+
+        return this;
+    };
 
     $.fn.ajaxupload = function(_options) {
         var self = this,
