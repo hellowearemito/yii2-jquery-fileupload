@@ -106,34 +106,37 @@
             $form.yiiActiveForm('validateAttribute', _options.attributeId);
         });
 
-        $form.on('beforeValidateAttribute', function(e, attribute) {
+        $form.on('beforeValidateAttribute', function(e, attribute, messages, deferreds) {
             if (attribute.input !== _options.input) {
                 return;
             }
+            console.log('before');
+            var def = $.Deferred();
+            setTimeout(function() {
+                def.resolve();
+            }, 10000);
+            deferreds.push(def);
         });
 
         $form.on('afterValidateAttribute', function(e, attribute, messages) {
             if (attribute.input !== _options.input) {
                 return;
             }
+            console.log('after');
             if (messages.length > 0) {
                 return;
             }
             // upload here
-            oldInput.fileupload();
+            oldInput.fileupload({
+                dropZone: null
+            });
             oldInput.fileupload('add', {
-                fileInput: oldInput
+                fileInput: oldInput,
+                formData: {
+                    'ajax-file-upload': true
+                }
             });
         });
-
-        /*self.find('input[type="file"]').fileupload({
-            dataType: 'json',
-            formData: {
-                'ajax-file-upload': true
-            },
-            replaceFileInput: false,
-            forceIframeTransport: true
-        });*/
 
         return this;
     };
