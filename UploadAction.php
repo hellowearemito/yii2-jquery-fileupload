@@ -48,6 +48,16 @@ class UploadAction extends BaseAction
     public $maxSize = false;
 
     /**
+     * @var integer minimum image width, false to allow any size
+     */
+    public $minWidth = false;
+
+    /**
+     * @var integer minimum image height, false to allow any size
+     */
+    public $minHeight = false;
+
+    /**
      * @var array (width,height) of the preview thumbnail, defaults to 300x200
      * This is ignored if the default thumbnailCallback is replaced.
      */
@@ -382,6 +392,12 @@ class UploadAction extends BaseAction
         if ($this->maxSize !== false && $this->maxSize < $size) {
             return 'invalid_file_size';
         }
+
+        /* validate min image resolution */
+        if (!ImageManipulate::validateMinResolution($file, $this->minWidth, $this->minHeight)) {
+            return 'invalid_image_resolution';
+        }
+
         return true;
     }
 

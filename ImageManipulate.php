@@ -229,4 +229,24 @@ class ImageManipulate
 
         return self::saveImage($thumb, $target_fn, $savetype);
     }
+
+    public static function validateMinResolution(UploadedFile $file, $minWidth, $minHeight)
+    {
+        if ($minWidth || $minHeight) {
+            $image = self::loadImage($file->tempName);
+
+            $width = ArrayHelper::getValue($image, 2, 0);
+            $height = ArrayHelper::getValue($image, 3, 0);
+
+            if ($minWidth && $width < $minWidth) {
+                return false;
+            }
+
+            if ($minHeight && $height < $minHeight) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
