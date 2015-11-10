@@ -2,6 +2,9 @@
 
 namespace mito\jqueryupload;
 
+use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
+
 class ImageManipulate
 {
     protected static function imageCreateFromAny($filepath)
