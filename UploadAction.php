@@ -112,6 +112,7 @@ class UploadAction extends BaseAction
         'invalid_file_type' => 'Invalid file type',
         'invalid_file_ext' => 'Invalid file extension',
         'invalid_file_size' => 'Invalid file size',
+        'invalid_image_resolution' => 'Invalid image resolution',
     ];
 
     public function run()
