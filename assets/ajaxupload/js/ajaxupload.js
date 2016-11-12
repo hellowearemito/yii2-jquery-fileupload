@@ -279,7 +279,7 @@
                         data.submit();
                         if (options.templateSelectors['preview']) {
                             data.context.find(options.templateSelectors['preview']).each(function (index, elem) {
-                                $(elem).prepend($(data.files[index].preview).addClass('origpreview'));
+                                $(elem).prepend($(data.files[index].preview).addClass('origpreview').addClass('img-responsive'));
                             });
                         }
                     });
@@ -442,7 +442,7 @@
                         if (options.templateSelectors['preview']) {
                             $this.find(options.templateSelectors['preview'])
                                 .find('.origpreview').remove().end()
-                                .prepend($('<img src="'+file.thumbnailUrl+'"/>'));
+                                .prepend($('<img src="'+file.thumbnailUrl+'" class="img-responsive"/>'));
                         }
                     }
 
