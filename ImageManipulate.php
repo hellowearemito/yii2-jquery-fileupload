@@ -69,6 +69,7 @@ class ImageManipulate
 
         $mem_limit = trim($orig_limit);
         $last = strtolower($mem_limit[strlen($mem_limit)-1]);
+        $mem_limit = (int)$mem_limit;
         switch($last) {
             case 'g':
             case 'gb':
