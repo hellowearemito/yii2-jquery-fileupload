@@ -320,7 +320,7 @@ class UploadAction extends BaseAction
     protected function upcountName($name)
     {
         return preg_replace_callback(
-            '/(?:(?: \(([\d]+)\))?(\.[^.]+))?$/',
+            '/(?:(?:_\(([\d]+)\))?(\.[^.]+))?$/',
             [$this, 'upcountNameCallback'],
             $name,
             1
