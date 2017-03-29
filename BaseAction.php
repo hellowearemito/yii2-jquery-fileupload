@@ -28,6 +28,8 @@ class BaseAction extends \yii\base\Action
 
         // TODO: fix wrong extension
 
+        $name = str_replace(' ', '_', $name);
+
         return $name;
     }
 
