@@ -314,13 +314,13 @@ class UploadAction extends BaseAction
     {
         $index = isset($matches[1]) ? intval($matches[1]) + 1 : 1;
         $ext = isset($matches[2]) ? $matches[2] : '';
-        return ' ('.$index.')'.$ext;
+        return '_('.$index.')'.$ext;
     }
 
     protected function upcountName($name)
     {
         return preg_replace_callback(
-            '/(?:(?: \(([\d]+)\))?(\.[^.]+))?$/',
+            '/(?:(?:_\(([\d]+)\))?(\.[^.]+))?$/',
             [$this, 'upcountNameCallback'],
             $name,
             1
